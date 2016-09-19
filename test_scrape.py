@@ -1,7 +1,7 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import unittest
-from types import *
+
 
 from scrape_operations import ScrapeOperations
 
@@ -9,29 +9,30 @@ from scrape_operations import ScrapeOperations
 class TestSainsbury(unittest.TestCase):
 
     def setUp(self):
-        self.url = "http://en.wikipedia.org/wiki/Monty_Python"
+        self.url = "http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html"
         self.bsObj = BeautifulSoup(urlopen(self.url))
 
     def _contentExists(self, products):
         try:
             for product in products.select('li'):
+                title_select = product.select('.productInfo h3 a')
+                self.assertNotEqual(title_select, None)
+                price_select = product.select('.pricePerUnit')
+                self.assertNotEqual(price_select, None)
 
-                    title_select = product.select('.productInfo h3 a')
-                    self.assertNotEqual(title_select, None)
-                    price_select = product.select('.pricePerUnit')
-                    self.assertNotEqual(price_select, None)
+                title = title_select[0].get_text().strip()
+                print (title)
+                self.assertTrue(isinstance(title, str))
 
-                    title = title_select[0].get_text().strip()
-                    assert type(title) is StringType, "title is not a string: %r" % title
+                description = ScrapeOperations.get_description(title_select[0].get('href'))
+                self.assertTrue(isinstance(description, str))
 
-                    description = ScrapeOperations.get_description(title_select[0].get('href'))
-                    assert type(description) is StringType, "description is not a string: %r" % description
+                page_size = ScrapeOperations.get_page_size(title_select[0].get('href'))
+                self.assertTrue(isinstance(page_size, str))
 
-                    page_size = ScrapeOperations.get_page_size(title_select[0].get('href'))
-                    assert type(page_size) is StringType, "pagesize is not a string: %r" % page_size
+                unit_price = ScrapeOperations.extract_price(price_select[0].get_text())
+                self.assertTrue(isinstance(float(unit_price), float))
 
-                    unit_price = ScrapeOperations.extract_price(price_select[0].get_text())
-                    assert type(unit_price) is FloatType, "unitprice is not an float: %r" % id
             return True
 
         except AttributeError as e:
