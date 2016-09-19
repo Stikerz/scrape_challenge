@@ -10,5 +10,11 @@ python test_scrape.py
 
 Dependencies needed from the system
 
-requests module ( Used Requests 2.11.1 , pip install requests)
-beautifulsoup4 library ( Used beautifulsoup4 4.5.1 ,pip install beautifulsoup4)
+requests module (Used Requests 2.11.1) , 
+
+pip install requests
+
+
+beautifulsoup4 library(Used beautifulsoup4 4.5.1)
+
+pip install beautifulsoup4
