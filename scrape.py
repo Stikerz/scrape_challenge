@@ -13,11 +13,6 @@ def _get_json(arg):
 
 
 def main():
-    """
-        - Crawls each uri passed to the script
-        - Prints separate json object for each passed uri
-    """
-
     args = sys.argv[1:]
 
     if len(args) == 0:
